@@ -12,5 +12,6 @@ echo [+] Uninstalling old versions
 for /f %%a in ('reg query HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall /s /d /c /e /f WireGuard ^| findstr CurrentVersion\Uninstall') do msiexec /qb /x %%~na
 echo [+] Installing new version
 for /f "tokens=3" %%a in ('findstr /r "Number.*=.*[0-9.]*" .\version\version.go') do set WIREGUARD_VERSION=%%a
+for /f "tokens=3" %%a in ('findstr /r "BuildTag.*=.*[0-9.]*" .\version\version.go') do set WIREGUARD_BUILD_TAG=%%a
 set WIREGUARD_VERSION=%WIREGUARD_VERSION:"=%
 msiexec /qb /i installer\dist\wireguard-%PROCESSOR_ARCHITECTURE%-%WIREGUARD_VERSION%.msi
