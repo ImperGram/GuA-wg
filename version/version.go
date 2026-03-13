@@ -25,5 +25,6 @@
 package version
 
 const (
-	Number = "GuAwg0.5.3"
+	Number   = "0.5.3"
+	BuildTag = "GuA-wg"
 )
