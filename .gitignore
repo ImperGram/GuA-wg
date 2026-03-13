@@ -17,4 +17,6 @@
 .idea
 *.ico
 
+*.res
+*.rc
 example.txt
