@@ -1,6 +1,25 @@
 /* SPDX-License-Identifier: MIT
  *
  * Copyright (C) 2019-2022 WireGuard LLC. All Rights Reserved.
+ * Copyright (C) 2026 Gleb Obitotsky. All Rights Reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
 
 package conf
@@ -116,6 +135,150 @@ func parseTableOff(s string) (bool, error) {
 	}
 	_, err := strconv.ParseUint(s, 10, 32)
 	return false, err
+}
+
+func parseJc(s string) (uint64, error) {
+	m, err := strconv.Atoi(s)
+	if err != nil {
+		return 0, err
+	}
+	if m < 0 {
+		return 0, &ParseError{l18n.Sprintf("Invalid Jc"), s}
+	}
+	return uint64(m), nil
+}
+
+func parseJmin(s string) (uint64, error) {
+	m, err := strconv.Atoi(s)
+	if err != nil {
+		return 0, err
+	}
+	if m < 0 {
+		return 0, &ParseError{l18n.Sprintf("Invalid Jmin"), s}
+	}
+	return uint64(m), nil
+}
+
+func parseJmax(s string) (uint64, error) {
+	m, err := strconv.Atoi(s)
+	if err != nil {
+		return 0, err
+	}
+	if m < 0 {
+		return 0, &ParseError{l18n.Sprintf("Invalid Jmax"), s}
+	}
+	return uint64(m), nil
+}
+
+func parseUrl(s string) (string, error) {
+	for _, url := range strings.Split(s, ",") {
+		url = strings.TrimSpace(url)
+		if !strings.HasPrefix(url, "http://") && !strings.HasPrefix(url, "https://") {
+			return "", &ParseError{l18n.Sprintf("Invalid URL: must start with http:// or https://"), url}
+		}
+	}
+	return s, nil
+
+}
+
+func parseHysteria(s string) (byte, error) {
+	m, err := strconv.Atoi(s)
+	if err != nil {
+		return 0, err
+	}
+	if m < 0 || m > 2 {
+		return 0, &ParseError{l18n.Sprintf("Invalid Hysteria"), s}
+	}
+	return byte(m), nil
+
+}
+
+func parseS1(s string) (uint64, error) {
+	m, err := strconv.Atoi(s)
+	if err != nil {
+		return 0, err
+	}
+	if m < 0 {
+		return 0, &ParseError{l18n.Sprintf("Invalid S1"), s}
+	}
+	return uint64(m), nil
+}
+
+func parseS2(s string) (uint64, error) {
+	m, err := strconv.Atoi(s)
+	if err != nil {
+		return 0, err
+	}
+	if m < 0 {
+		return 0, &ParseError{l18n.Sprintf("Invalid S2"), s}
+	}
+	return uint64(m), nil
+}
+
+func parseS3(s string) (uint64, error) {
+	m, err := strconv.Atoi(s)
+	if err != nil {
+		return 0, err
+	}
+	if m < 0 {
+		return 0, &ParseError{l18n.Sprintf("Invalid S3"), s}
+	}
+	return uint64(m), nil
+}
+
+func parseS4(s string) (uint64, error) {
+	m, err := strconv.Atoi(s)
+	if err != nil {
+		return 0, err
+	}
+	if m < 0 {
+		return 0, &ParseError{l18n.Sprintf("Invalid S4"), s}
+	}
+	return uint64(m), nil
+}
+
+func parseH1(s string) (uint64, error) {
+	m, err := strconv.Atoi(s)
+	if err != nil {
+		return 0, err
+	}
+	if m < 0 {
+		return 0, &ParseError{l18n.Sprintf("Invalid H1"), s}
+	}
+	return uint64(m), nil
+}
+
+func parseH2(s string) (uint64, error) {
+	m, err := strconv.Atoi(s)
+	if err != nil {
+		return 0, err
+	}
+	if m < 0 {
+		return 0, &ParseError{l18n.Sprintf("Invalid H2"), s}
+	}
+	return uint64(m), nil
+}
+
+func parseH3(s string) (uint64, error) {
+	m, err := strconv.Atoi(s)
+	if err != nil {
+		return 0, err
+	}
+	if m < 0 {
+		return 0, &ParseError{l18n.Sprintf("Invalid H3"), s}
+	}
+	return uint64(m), nil
+}
+
+func parseH4(s string) (uint64, error) {
+	m, err := strconv.Atoi(s)
+	if err != nil {
+		return 0, err
+	}
+	if m < 0 {
+		return 0, &ParseError{l18n.Sprintf("Invalid H4"), s}
+	}
+	return uint64(m), nil
 }
 
 func parseKeyBase64(s string) (*Key, error) {
@@ -255,6 +418,84 @@ func FromWgQuick(s, name string) (*Config, error) {
 					return nil, err
 				}
 				conf.Interface.TableOff = tableOff
+			case "jc":
+				jc, err := parseJc(val)
+				if err != nil {
+					return nil, err
+				}
+				conf.Interface.Jc = jc
+			case "jmin":
+				jmin, err := parseJmin(val)
+				if err != nil {
+					return nil, err
+				}
+				conf.Interface.Jmin = jmin
+			case "jmax":
+				jmax, err := parseJmax(val)
+				if err != nil {
+					return nil, err
+				}
+				conf.Interface.Jmax = jmax
+			case "url":
+				url, err := parseUrl(val)
+				if err != nil {
+					return nil, err
+				}
+				conf.Interface.Url = url
+			case "hysteria":
+				hysteria, err := parseHysteria(val)
+				if err != nil {
+					return nil, err
+				}
+				conf.Interface.Hysteria = hysteria
+			case "s1":
+				s1, err := parseS1(val)
+				if err != nil {
+					return nil, err
+				}
+				conf.Interface.S1 = s1
+			case "s2":
+				s2, err := parseS2(val)
+				if err != nil {
+					return nil, err
+				}
+				conf.Interface.S2 = s2
+			case "s3":
+				s3, err := parseS3(val)
+				if err != nil {
+					return nil, err
+				}
+				conf.Interface.S3 = s3
+			case "s4":
+				s4, err := parseS4(val)
+				if err != nil {
+					return nil, err
+				}
+				conf.Interface.S4 = s4
+			case "h1":
+				h1, err := parseH1(val)
+				if err != nil {
+					return nil, err
+				}
+				conf.Interface.H1 = h1
+			case "h2":
+				h2, err := parseH2(val)
+				if err != nil {
+					return nil, err
+				}
+				conf.Interface.H2 = h2
+			case "h3":
+				h3, err := parseH3(val)
+				if err != nil {
+					return nil, err
+				}
+				conf.Interface.H3 = h3
+			case "h4":
+				h4, err := parseH4(val)
+				if err != nil {
+					return nil, err
+				}
+				conf.Interface.H4 = h4
 			default:
 				return nil, &ParseError{l18n.Sprintf("Invalid key for [Interface] section"), key}
 			}
@@ -345,6 +586,22 @@ func FromDriverConfiguration(interfaze *driver.Interface, existingConfig *Config
 			PreDown:   existingConfig.Interface.PreDown,
 			PostDown:  existingConfig.Interface.PostDown,
 			TableOff:  existingConfig.Interface.TableOff,
+
+			Jc:   existingConfig.Interface.Jc,
+			Jmin: existingConfig.Interface.Jmin,
+			Jmax: existingConfig.Interface.Jmax,
+
+			Url:      existingConfig.Interface.Url,
+			Hysteria: existingConfig.Interface.Hysteria,
+
+			S1: existingConfig.Interface.S1,
+			S2: existingConfig.Interface.S2,
+			S3: existingConfig.Interface.S3,
+			S4: existingConfig.Interface.S4,
+			H1: existingConfig.Interface.H1,
+			H2: existingConfig.Interface.H2,
+			H3: existingConfig.Interface.H3,
+			H4: existingConfig.Interface.H4,
 		},
 	}
 	if interfaze.Flags&driver.InterfaceHasPrivateKey != 0 {

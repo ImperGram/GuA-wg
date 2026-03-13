@@ -70,12 +70,12 @@ type Interface struct {
 	PostDown   string
 	TableOff   bool
 
-	Js   uint64
+	Jc   uint64
 	Jmin uint64
 	Jmax uint64
 
-	Url      []string
-	Hysteria bool
+	Url      string
+	Hysteria byte
 
 	S1 uint64
 	S2 uint64
