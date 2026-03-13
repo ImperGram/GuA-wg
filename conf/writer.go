@@ -1,6 +1,25 @@
 /* SPDX-License-Identifier: MIT
  *
  * Copyright (C) 2019-2022 WireGuard LLC. All Rights Reserved.
+ * Copyright (C) 2026 Gleb Obitotsky. All Rights Reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
 
 package conf
@@ -61,6 +80,41 @@ func (conf *Config) ToWgQuick() string {
 	}
 	if conf.Interface.TableOff {
 		output.WriteString("Table = off\n")
+	}
+
+	if conf.Interface.Jc > 0 {
+		output.WriteString(fmt.Sprintf("Jc = %d\n", conf.Interface.Jc))
+	}
+	if conf.Interface.Jmin > 0 {
+		output.WriteString(fmt.Sprintf("Jmin = %d\n", conf.Interface.Jmin))
+	}
+	if conf.Interface.Jmax > 0 {
+		output.WriteString(fmt.Sprintf("Jmax = %d\n", conf.Interface.Jmax))
+	}
+
+	if conf.Interface.S1 > 0 {
+		output.WriteString(fmt.Sprintf("S1 = %d\n", conf.Interface.S1))
+	}
+	if conf.Interface.S2 > 0 {
+		output.WriteString(fmt.Sprintf("S2 = %d\n", conf.Interface.S2))
+	}
+	if conf.Interface.S3 > 0 {
+		output.WriteString(fmt.Sprintf("S3 = %d\n", conf.Interface.S3))
+	}
+	if conf.Interface.S4 > 0 {
+		output.WriteString(fmt.Sprintf("S4 = %d\n", conf.Interface.S4))
+	}
+	if conf.Interface.H1 > 0 {
+		output.WriteString(fmt.Sprintf("H1 = %d\n", conf.Interface.H1))
+	}
+	if conf.Interface.H2 > 0 {
+		output.WriteString(fmt.Sprintf("H2 = %d\n", conf.Interface.H2))
+	}
+	if conf.Interface.H3 > 0 {
+		output.WriteString(fmt.Sprintf("H3 = %d\n", conf.Interface.H3))
+	}
+	if conf.Interface.H4 > 0 {
+		output.WriteString(fmt.Sprintf("H4 = %d\n", conf.Interface.H4))
 	}
 
 	for _, peer := range conf.Peers {
